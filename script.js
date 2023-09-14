@@ -63,7 +63,15 @@ function myfunction() {
   var rebeplayer = document.getElementById("reberadio");
   if(play){
     if(rebeplayer.paused){
-      rebeplayer.play();
+      var resp = rebeplayer.play();
+      if (resp!== undefined) {
+          resp.then(_ => {
+              // autoplay starts!
+          }).catch(error => {
+             //show error
+            console.log(error);
+          });
+      }
     }
   } else {
     if(!rebeplayer.paused){
