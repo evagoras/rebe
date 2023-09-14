@@ -2,7 +2,7 @@ fetch("schedule.json")
 .then(function(response){
   return response.json();
 })
-.then(function(schdules){
+.then(function(schedules){
   let placeholder = document.querySelector("#data-output");
   let out = "";
   for(let schedule of schedules){
