@@ -2,10 +2,10 @@ let playtimes = [];
 
 fetch("schedule.json")
 .then(function(response){
-  playtimes = response.json();
   return response.json();
 })
 .then(function(schedules){
+  playtimes = schedules;
   let placeholder = document.querySelector("#data-output");
   let out = "";
   for(let schedule of schedules){
