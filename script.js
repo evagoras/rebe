@@ -69,6 +69,8 @@ function myfunction() {
               // autoplay starts!
           }).catch(error => {
              //show error
+            rebeplayer.click();
+            rebeplayer.play();
             console.log(error);
           });
       }
