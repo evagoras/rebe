@@ -59,5 +59,17 @@ function myfunction() {
       break;
     }
   }
+
+  var rebeplayer = document.getElementById("reberadio");
+  if(play){
+    if(rebeplayer.paused){
+      rebeplayer.play();
+    }
+  } else {
+    if(!rebeplayer.paused){
+      rebeplayer.pause();
+    }
+  }
+    
   console.log(play);
 }
