@@ -1,4 +1,4 @@
-let playtimes = "";
+let playtimes = [];
 
 fetch("schedule.json")
 .then(function(response){
