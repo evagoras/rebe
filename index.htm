@@ -13,10 +13,19 @@
         </td>
       </tr>
     </table>
-    <script language="JavaScript">
-      fetch('schedule.json')
-        .then((response) => response.json())
-        .then((json) => console.log(json));
-    </script>
+
+    <table border="1" cellpadding="3" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Start</th>
+          <th>End</th>
+        </tr>
+      </thead>
+      <tbody id="data-output">
+      </tbody>
+    </table>
+    
+    <script src="script.js"></script>
+    
   </body>
 </html>
