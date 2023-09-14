@@ -63,11 +63,11 @@ function myfunction() {
   var rebeplayer = document.getElementById("reberadio");
   if(play){
     if(rebeplayer.paused){
-      rebeplayer.play();
+      rebeplayer.click();
     }
   } else {
     if(!rebeplayer.paused){
-      rebeplayer.pause();
+      rebeplayer.click();
     }
   }
     
