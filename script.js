@@ -16,3 +16,24 @@ fetch("schedule.json")
 
   placeholder.innerHTML = out;
 })
+
+setInterval(function() {
+  myfunction();
+}, 5000);
+
+function myfunction() {
+  var d = new Date();
+  console.log(d);
+  var month = d.getMonth();
+  console.log(month);
+  var weekday = d.getDay();
+  console.log(weekday);
+  var monthday = d.getDate();
+  console.log(monthday);
+  var hour = d.getHours();
+  console.log(hour);
+  var min = d.getMinutes();
+  console.log(min);
+  var sec = d.getSeconds();
+  console.log(sec);
+}
