@@ -1,5 +1,7 @@
 let playtimes = [];
 
+document.getElementById("clickme").click();
+
 fetch("schedule.json")
 .then(function(response){
   return response.json();
