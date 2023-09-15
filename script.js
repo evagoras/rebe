@@ -62,9 +62,10 @@ function myfunction() {
     }
   }
 
-  var rebeplayer = document.getElementById("reberadio");
+  var rebeplayer = document.getElementById("radio");
   if(play){
     if(rebeplayer.paused){
+      rebeplayer.muted = false;
       var resp = rebeplayer.play();
       if (resp!== undefined) {
           resp.then(_ => {
