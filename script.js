@@ -56,7 +56,7 @@ function myfunction() {
     const startDate = new Date(year, month, monthday, startHour, startMin, 0);
     const endDate = new Date(year, month, monthday, endHour, endMin, 0);
 
-    if(d>startDate && d<endDate){
+    if(d>=startDate && d<=endDate){
       play = true;
       break;
     }
