@@ -10,10 +10,9 @@ let playtimesOutput = "";
 let holidaysOutput = "";
 let todaysDate = new Date();
 let weekDayNow = todaysDate.getDay();
-
-var yearNow = todaysDate.getFullYear();
-var monthNow = todaysDate.getMonth();
-var monthDayNow = todaysDate.getDate();
+let yearNow = todaysDate.getFullYear();
+let monthNow = todaysDate.getMonth();
+let monthDayNow = todaysDate.getDate();
 
 function renderPlaytimes(){
   for(let playtime of playtimes){
@@ -50,13 +49,14 @@ function isToday(date) {
 }
 
 function checkPlaytimes() {
-  let play = false;
+  var play = false;
+  var nowDate = new Date();
   for(let playtime of playtimes){
     const [startHour, startMin] = playtime.start.split(":");
     const [endHour, endMin] = playtime.end.split(":");
     const startDate = new Date(yearNow, monthNow, monthDayNow, startHour, startMin, 0);
     const endDate = new Date(yearNow, monthNow, monthDayNow, endHour, endMin, 0);
-    if(todaysDate >= startDate && todaysDate <= endDate){
+    if(nowDate >= startDate && nowDate <= endDate){
       play = true;
       break;
     }
@@ -82,6 +82,7 @@ function checkPlaytimes() {
 
 function playRadio(){
   stopRadio();
+  var runCheckPlaytimes = false;
   // play only between Monday to Friday
   if(weekDayNow > 0 && weekDayNow < 7){
     for(let holiday of holidays){
@@ -91,17 +92,20 @@ function playRadio(){
       if(isToday(holidayDate)){
         // actions for when it's a holiday
       } else {
-        setInterval(function(){
-          checkPlaytimes();
-        }, 5000);
+        runCheckPlaytimes = true;
+        break;
       }
     }
+  }
+  if(runCheckPlaytimes){
+    setInterval(checkPlaytimes, 5000);
   }
 }
 
 function stopRadio(){
   radio.pause();
   radio.currentTime = 0;
+  radio.muted = true;
 }
 
 // run page actions
