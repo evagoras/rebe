@@ -1,88 +1,110 @@
-let playtimes = [];
+"use strict";
 
-document.getElementById("clickme").click();
+import playtimes from "./playtimes.json" assert {type: "json"}
+import holidays from "./holidays.json" assert {type: "json"}
 
-fetch("schedule.json")
-.then(function(response){
-  return response.json();
-})
-.then(function(schedules){
-  playtimes = schedules;
-  let placeholder = document.querySelector("#data-output");
-  let out = "";
-  for(let schedule of schedules){
-    out += `
+let playtimesDiv = document.getElementById("playtimes-output");
+let holidaysDiv = document.getElementById("holidays-output");
+var radio = document.getElementById("radio");
+let playtimesOutput = "";
+let holidaysOutput = "";
+let todaysDate = new Date();
+let weekDayNow = todaysDate.getDay();
+
+var yearNow = todaysDate.getFullYear();
+var monthNow = todaysDate.getMonth();
+var monthDayNow = todaysDate.getDate();
+
+function renderPlaytimes(){
+  for(let playtime of playtimes){
+    playtimesOutput += `
       <tr>
-        <td>${schedule.start}</td>
-        <td>${schedule.end}</td>
+        <td>${playtime.start}</td>
+        <td>${playtime.end}</td>
       </tr>
     `;
   }
+  playtimesDiv.innerHTML = playtimesOutput;
+}
 
-  placeholder.innerHTML = out;
-})
+function renderHolidays(){
+  for(let holiday of holidays){
+    holidaysOutput += `
+      <tr>
+        <td>${holiday.date}</td>
+      </tr>
+    `;
+  }
+  holidaysDiv.innerHTML = holidaysOutput;
+}
 
-setInterval(function() {
-  myfunction();
-}, 5000);
+function isToday(date) {
+  if(
+    todaysDate.getFullYear() === date.getFullYear() &&
+    todaysDate.getMonth() === date.getMonth() &&
+    todaysDate.getDate() === date.getDate()
+  ){
+    return true;
+  }
+  return false;
+}
 
-function myfunction() {
-  var d = new Date();
-  console.log(d);
-  var year = d.getFullYear();
-  console.log(year);
-  var month = d.getMonth();
-  console.log(month);
-  var weekday = d.getDay();
-  console.log(weekday);
-  var monthday = d.getDate();
-  console.log(monthday);
-  var hour = d.getHours();
-  console.log(hour);
-  var min = d.getMinutes();
-  console.log(min);
-  var sec = d.getSeconds();
-  console.log(sec);
-  var play = false;
-
+function checkPlaytimes() {
+  let play = false;
   for(let playtime of playtimes){
-    const startTime = playtime.start.split(":");
-    const startHour = startTime[0];
-    const startMin = startTime[1];
-    const endTime = playtime.end.split(":");
-    const endHour = endTime[0];
-    const endMin = endTime[1];
-    
-    const startDate = new Date(year, month, monthday, startHour, startMin, 0);
-    const endDate = new Date(year, month, monthday, endHour, endMin, 0);
-
-    if(d>=startDate && d<=endDate){
+    const [startHour, startMin] = playtime.start.split(":");
+    const [endHour, endMin] = playtime.end.split(":");
+    const startDate = new Date(yearNow, monthNow, monthDayNow, startHour, startMin, 0);
+    const endDate = new Date(yearNow, monthNow, monthDayNow, endHour, endMin, 0);
+    if(todaysDate >= startDate && todaysDate <= endDate){
       play = true;
       break;
     }
   }
-
-  var rebeplayer = document.getElementById("radio");
   if(play){
-    if(rebeplayer.paused){
-      rebeplayer.muted = false;
-      var resp = rebeplayer.play();
+    radio.muted = false;
+    if(radio.paused){
+      var resp = radio.play();
       if (resp!== undefined) {
           resp.then(_ => {
               // autoplay starts!
           }).catch(error => {
-             //show error
-            rebeplayer.click();
-            rebeplayer.play();
-            console.log(error);
+            //show error
+            radio.muted = false;
+            radio.play();
           });
       }
     }
   } else {
-    if(!rebeplayer.paused){
-      rebeplayer.pause();
+    stopRadio();
+  }
+}
+
+function playRadio(){
+  stopRadio();
+  // play only between Monday to Friday
+  if(weekDayNow > 0 && weekDayNow < 7){
+    for(let holiday of holidays){
+      const [holidayDay, holidayMonth, holidayYear] = holiday.date.split("/");
+      const holidayDate = new Date(holidayYear, holidayMonth, holidayDay);
+      // exclude any holidays
+      if(isToday(holidayDate)){
+        // actions for when it's a holiday
+      } else {
+        setInterval(function(){
+          checkPlaytimes();
+        }, 5000);
+      }
     }
   }
-    
-  console.log(play);
 }
+
+function stopRadio(){
+  radio.pause();
+  radio.currentTime = 0;
+}
+
+// run page actions
+renderPlaytimes();
+renderHolidays();
+playRadio();
